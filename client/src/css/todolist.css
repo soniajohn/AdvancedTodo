@@ -1,0 +1,123 @@
+body{
+
+    
+}
+ .parent_div{
+    width:100vw;
+    height:100vh;
+    
+    
+      }
+      .container{
+
+        border:1px solid gray;
+      
+      width:23vw;
+      height: 50vh;
+      position:absolute;
+      left:48%;
+      top:48%;
+      transform: translate(-50%,-50%);
+    
+       
+        }
+
+.heading{
+   
+  font-size: 23px;
+  font-family: 'Bree Serif', serif;
+ color: rgb(60, 60, 241);
+    
+}
+
+.plusimage{
+
+    height: 25px;
+    width:20px;
+    
+}
+.todonametxt{
+margin-top: 12px;
+    height: 30px;
+    width:270px;
+    font-size: large;
+   
+}
+.imgbutton{
+    position:absolute;
+    top:50px;
+   
+  
+  
+  
+    
+}
+.secondcontainer{
+position:absolute;
+    margin-left: 13px;
+    margin-top:10px ;
+ 
+}
+.thirdcontainer{
+
+
+padding-top: 10px;
+
+}
+.insert{
+padding-top: 4px;
+height: 30px;
+width:115%;
+text-align: left;
+margin-top: 10px;
+font-size: large;
+background-color:rgb(250, 224, 250)
+}
+  i{
+
+    padding-top: 4px;
+ 
+  position: fixed;
+    cursor: pointer;
+
+right:5%;
+    }
+    .editimg{
+      padding-top: 4px;
+      height: 20px;
+      width:20px;
+      position: fixed;
+      right:11%;
+      cursor: pointer;
+
+    }
+    .validation{
+      margin-left: 30%;
+      color:red;
+      font-size: smaller;
+    
+    }
+
+
+   
+    .third_div{
+      border:1px solid gray;
+  
+      width:23vw;
+      
+     padding-top: 2%; 
+
+
+      
+      height: 4vh;
+      position:absolute;
+      left:50%;
+      top:100%;
+      transform: translate(-50%,-5%);
+    }
+    .newbtn{
+
+      position: absolute;
+      top:-4%;
+      left:40%;
+    }
