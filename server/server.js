@@ -16,17 +16,18 @@ const db=mysql.createPool({
     password:"Sonia25!",
     database:"advancedtodo",
                           });
-    app.post('/',(req,res)=>{
+    app.post('/taskinsert',(req,res)=>{
     
     const task_name=req.body.task;
+    const userid=req.body.userid
     
     const today=new Date();
    
     const date=today.getDay()+"-"+today.getMonth()+"-"+today.getFullYear();
 
 
-    const sqlInsert="INSERT INTO Tasks(Taskname,createddate) VALUES(?,?)"
-     db.query(sqlInsert,[task_name,date],(err,result)=>{
+    const sqlInsert="INSERT INTO Tasks(Taskname,createddate,Tasks.user_id) VALUES(?,?,?)"
+     db.query(sqlInsert,[task_name,date,userid],(err,result)=>{
  
 
        
@@ -57,6 +58,57 @@ app.post("/childinsert",(req,res)=>{
         
     });
     
+    app.post("/signupinsert",(req,res)=>{
+
+        const fname=req.body.fname
+        const lname=req.body.lname
+        const ename=req.body.email
+        const password=req.body.password
+        const cpassword=req.body.cpassword
+         console.log(fname)
+         console.log(lname)
+         const sqlInsert="INSERT INTO user_info(f_name,l_name,email,password,cpassword) VALUES(?,?,?,?,?)"
+         db.query(sqlInsert,[fname,lname,ename,password,cpassword],(err,result)=>{
+            
+         })
+          
+        
+        });
+
+
+
+        app.post("/logininsert",(req,res)=>{
+
+
+            const email=req.body.email
+            
+            const password=req.body.password
+
+            db.query("select user_info.user_id,email,password,f_name from user_info  WHERE email=? AND password=?",[email,password],(err,result)=>{
+
+
+                if(err){
+             res.send({err:err})
+
+                }
+                if (result.length>0){
+                  
+                    res.send(result);
+                }else{
+
+                    res.send({message:"wrong email/password"})
+                }
+            })
+           // console.log(email)
+            
+
+///////////////////////
+              
+            db.end;
+            });
+    
+
+
 
 
 
@@ -77,6 +129,35 @@ app.delete("/delete/:task_del",(req,res)=>{
     });
 
 });
+
+
+app.get("/fetchData/:userid",(req,res)=>{
+
+    const user=req.params.userid;
+  //  console.log("userid="+user)
+
+db.query("SELECT Taskname FROM Tasks WHERE Tasks.user_id=?",[user],(err,result)=>{
+   if(err){
+       console.log(err)
+    }
+   else{
+     res.send(result)
+  }
+ })
+
+ 
+ });
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -104,6 +185,32 @@ app.put("/Childupdate",(req,res)=>{
     
     
       });
+
+
+      app.get("/showtodos",(req,res)=>{
+
+        
+        db.query("SELECT Taskname FROM Tasks",(err,result)=>{
+         if(err){
+             console.log(err)
+         }
+         else{
+             res.send(result)
+         }
+     })
+     
+     });
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,14 +1,19 @@
 import react from 'react';
 import React, { useState} from "react";
-import {useHistory} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 import{useContext} from 'react';
 import Axios from 'axios';
 import {ListContext} from '../context/ListContext.js'
 import  { useRef, useEffect } from 'react';
 
 
+  
+    
+
 const Tasklist=()=>{
 
+
+  const{username,SetUsername,userid,SetUserid}=useContext(ListContext);
     const{optionname,setOptionname}=useContext(ListContext)
     const [task,setTasks] = useState("");
     const [items,setItems]=useState([]);
@@ -17,9 +22,19 @@ const Tasklist=()=>{
     const[optStatus,setOptStatus]=useState(false);
     const[taskValue,setTaskvalue]=useState("")
     const[validatevalue,setValidatevalue]=useState("")
+    const[fetchlist,setFetchlist]=useState([])
+    const[showList,setshowList]=useState([])
     let history=useHistory();
 
-   
+    const[usertasklist,setUsertasklist]=useState([])
+
+
+
+
+
+
+
+
   function passData(val)
     
       {
@@ -41,9 +56,9 @@ const Tasklist=()=>{
         
       if(task){
                 
-        Axios.post("http://localhost:4000/",{
+        Axios.post("http://localhost:4000/taskinsert",{
         
-        task:task,
+        task:task,userid:userid
              
         }).then(()=>{
           alert("successful insert")});
@@ -77,6 +92,19 @@ const Tasklist=()=>{
              setItems(updatedItems);
 
           } 
+
+
+
+
+
+
+
+
+
+
+
+
+          
 
           const updateTask=(tasname,txt)=>{
           
@@ -117,6 +145,59 @@ const Tasklist=()=>{
           }
         
         
+          useEffect(() => {
+          
+            Axios.get(`http://localhost:4000/fetchData/${userid}`,
+         { userid:userid}
+            
+            ).then(response=>{
+              console.log(response)
+          // setUsertasklist(response.data)
+          setItems(response.data)
+          
+          // alert(response.data[0].Taskname)
+            })
+            .catch(err=>{
+              console.log(err)
+            
+            })
+          // SetUsername( response.data[0].user)
+            
+        }, []);
+          
+
+
+
+
+          
+   
+function num()
+{
+
+  alert("hello")
+}
+            
+      
+           
+                
+         
+          
+            
+                            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         const deleteTask=(task_del)=>{
@@ -156,6 +237,8 @@ const Tasklist=()=>{
 
 
 
+
+
       const editItem=(id)=>{
   
         let newEditItem=items.find((elem)=>{
@@ -181,6 +264,8 @@ const Tasklist=()=>{
 
           }
 
+     
+
 
     return(
 
@@ -191,7 +276,8 @@ const Tasklist=()=>{
                 
                      
                           <div class="secondcontainer">
-                          <label class="heading"> ToDo App</label> <br></br> 
+                            
+                          <label class="heading"> {username}{userid}</label> <br></br> 
                           
                         <span class="thirdcontainer">
                           <input type="text"  ref={inputRef} class="todonametxt" title={validatevalue} value={task}autoComplete="off" maxLength="20" onChange={(e)=>passData(e.target.value)}></input>&nbsp;&nbsp;
@@ -223,9 +309,9 @@ const Tasklist=()=>{
           
                    obj2.status=e.target.checked
 
-                  setOptionname(elm.text);
+                setOptionname(elm.text);
   
-              
+              //setOptionname(items)
             
                
                updateTaskStatus(obj2.text,obj2.status)
@@ -265,16 +351,14 @@ const Tasklist=()=>{
                        
 }
 
-
-
-
                       
                           </div>
-          
+                        
                    </div>
-                      
+                 
           
            </div>
+           
           
           
           </react.Fragment>
