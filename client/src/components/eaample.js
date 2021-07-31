@@ -152,7 +152,7 @@ const Tasklist=()=>{
             
             ).then(response=>{
               console.log(response)
-          setItems(response.data)
+          setUsertasklist(response.data)
         
           
        //   usertasklist.map((elem)=>{
@@ -217,8 +217,8 @@ const Tasklist=()=>{
                               setToggleBtn(true)
           
                               setTasks(" ")
-                               updateTask(task,elem.Taskname)
-                               return{...elem,Taskname:task}
+                               updateTask(task,elem.text)
+                               return{...elem,text:task}
             
                                      }
                   return elem;
@@ -226,7 +226,7 @@ const Tasklist=()=>{
       
                            )
                      } else{
-                         setItems([{id:Date.now(),Taskname:task,status:false},...items]);
+                         setItems([{id:Date.now(),text:task,status:false},...items]);
 
                           setTasks("");
                           setValidatevalue("");
@@ -247,8 +247,7 @@ const Tasklist=()=>{
 
                           });
          setToggleBtn(false);
-         alert(newEditItem.Taskname)
-          setTasks(newEditItem.Taskname)
+          setTasks(newEditItem.text)
           setIsEditItem(id)
 
 
@@ -310,7 +309,7 @@ const Tasklist=()=>{
           
                    obj2.status=e.target.checked
 
-                setOptionname(elm.Taskname);
+                setOptionname(elm.text);
   
               //setOptionname(items)
             
@@ -325,16 +324,16 @@ const Tasklist=()=>{
                  })
                  )}
                
-                 } value={elm.Taskname} checked={elm.status} class="optionbtn" name="option" onClick= {redirectTask} 
+                 } value={elm.text} checked={elm.status} class="optionbtn" name="option" onClick= {redirectTask} 
                 
                  />
                  
                             
                 
  
-         <label name="text">{elm.Taskname}</label>
+         <label name="text">{elm.text}</label>
          <img title="edit item" class="editimg" src="https://img.icons8.com/color/48/000000/edit-property.png" onClick={()=>editItem(elm.id)}/>
-         <i class="fa fa-trash" title="delete Item" onClick={()=>deleteItem(ind,elm.Taskname)}></i>
+         <i class="fa fa-trash" title="delete Item" onClick={()=>deleteItem(ind,elm.text)}></i>
 
           
               </div>
@@ -351,7 +350,29 @@ const Tasklist=()=>{
             )
                        
 }
-  
+<span class="showcomplete_txt" >
+     
+ <label >completed Task</label></span>
+ {
+     
+     usertasklist.map((val,key)=>{
+         
+     
+        
+      {
+        
+        return (
+            <div class="showcheck">        
+            <h4>Task Name:</h4>&nbsp;&nbsp;<h5>{val.Taskname}</h5>
+            
+            </div>
+            
+                )
+            }
+                
+                                 }
+                     )
+}  
                       
                           </div>
                         

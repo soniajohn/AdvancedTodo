@@ -79,12 +79,12 @@ const Login=()=>{
            });
        
                       } 
-                 cancelData();   
+                // cancelData();   
                     
            };  
     
          const cancelData = () => { 
-         setUser({email:"",password:""})
+         setUser({email:" ",password:" "})
           }
        
 
@@ -102,16 +102,16 @@ const Login=()=>{
                           <label class="todolbl" >Login</label><br></br>
                           <label class="todolbl2" >Login with E-mail</label><br></br>
                         <span class="thirdcontainer">
-                          <input type="text"  name="email" class="todonametxt"  autoComplete="off" maxLength="20" onChange={handleInputs} ></input>&nbsp;&nbsp;
+                          <input type="text"  name="email" class="todonametxt" value={user.email} autoComplete="off" maxLength="20" onChange={handleInputs} ></input>&nbsp;&nbsp;
                           </span><br></br>
                           <label class="todolbl" >Password</label><br></br>
                           
                         <span class="thirdcontainer">
-                          <input type="text" name="password"  class="todonametxt"  autoComplete="off" maxLength="20" onChange={handleInputs} ></input>&nbsp;&nbsp;
+                          <input type="text" name="password"  class="todonametxt" value={user.password} autoComplete="off" maxLength="20" onChange={handleInputs} ></input>&nbsp;&nbsp;
                           </span>
                           <p>{loginstatus}</p>
                           <div class="btnclass">
-                          <button  class="todobtn" onClick={loginData}>SignIn</button>&nbsp;&nbsp;<button class="todobtn">Reset</button>
+                          <button  class="todobtn" onClick={loginData}>SignIn</button>&nbsp;&nbsp;<button class="todobtn" onClick={cancelData }>Reset</button>
                           <a href="/signupinsert" class="signup">SignUp</a></div>
                           
                            

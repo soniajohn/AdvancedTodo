@@ -116,7 +116,7 @@ app.delete("/delete/:task_del",(req,res)=>{
 
 
     const task_del=req.params.task_del;
-   
+   console.log(task_del)
        
        db.query("DELETE FROM Tasks WHERE Taskname=?",task_del,(err,result)=>{
         if(err){
