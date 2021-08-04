@@ -19,7 +19,8 @@ const ChildList=()=>{
     const[validatevalue,setValidatevalue]=useState("")
     const[tskList,settskList]=useState([])
     const[showallCheck,setShowallCheck]=useState("")
-    
+    const{username,SetUsername,userid,SetUserid}=useContext(ListContext);
+    const[fetchid,setFetchid]=useState([])
   
     let history=useHistory();
 
@@ -29,37 +30,40 @@ const ChildList=()=>{
   function passData(val)
   {
   
-  if(val.length>0)
-  {
-    var name= val[0].toUpperCase()+val.slice(1)
+    if(val.length>0)
+      {
+         var name= val[0].toUpperCase()+val.slice(1)
 
-   }
+      }
 
-setTasks(name);
-
-
-return val.length<15 ?'':setValidatevalue("max char 15");
-
-}
+      setTasks(name);
 
 
-  const deleteItem=(id,task_del)=>{
-    const updatedItems=items.filter((elm,ind)=>{
+     return val.length<15 ?'':setValidatevalue("max char 15");
+
+     }
+
+
+
+     const deleteItem=(id,task_del)=>{
+      const updatedItems=items.filter((elm,ind)=>{
         
-        return ind!==id;
+             return ind!==id;
        
                      } ) ;
              deleteTask(task_del);
              setItems(updatedItems);
 
-          } 
+             } 
+
 
 
         const deleteTask=(task_del)=>{
 
           Axios.delete(`http://localhost:4000/childdelete/${task_del}`);
       
-          };
+             };
+
 
 
          
@@ -67,19 +71,19 @@ return val.length<15 ?'':setValidatevalue("max char 15");
             
                        
           Axios.put("http://localhost:4000/childedit",
-             {
+              {
                 tasname:tasname,original_txt:txt
               
               }).then((response)=>
             
              { alert("update");
           
-            }
+             }
               
              );
             
             
-           }
+             }
 
 
 
@@ -92,14 +96,14 @@ return val.length<15 ?'':setValidatevalue("max char 15");
 
       setItems(
         items.map((elem)=>{
-          if(elem.id===isEditItem){
+          if(elem.childtodo_id===isEditItem){
              setToggleBtn(true)
           
               setTasks(" ")
             
             
-              updateTask(task,elem.text)
-              return{...elem,text:task}
+              updateTask(task,elem.childtask_name)
+              return{...elem,childtask_name:task}
             
                            }
              return elem;
@@ -107,7 +111,7 @@ return val.length<15 ?'':setValidatevalue("max char 15");
       
       )
     } else{
-    setItems([{id:Date.now(),text:task,status:false},...items]);
+    setItems([{id:Date.now(),childtask_name:task,child_status:false},...items]);
 
     setTasks("")
    
@@ -130,7 +134,9 @@ return val.length<15 ?'':setValidatevalue("max char 15");
   if(task){
       Axios.post("http://localhost:4000/childinsert",{
       task:task,
-      text:optionname
+      text:optionname,
+      Taskid:fetchid
+      
            
    }).then(()=>{
        alert("successful insert")});
@@ -143,31 +149,80 @@ return val.length<15 ?'':setValidatevalue("max char 15");
 
 
  
-const editItem=(id)=>{
+   const editItem=(id)=>{
   
     let newEditItem=items.find((elem)=>{
     
     
-    return elem.id===id
+    return elem.childtodo_id===id
 
              });
-  setToggleBtn(false);
-setTasks(newEditItem.text)
-setIsEditItem(id)
+   setToggleBtn(false);
+   setTasks(newEditItem.childtask_name)
+   setIsEditItem(id)
 
 
-}
+         }
+
+
+
+useEffect(() => {
+     
+  Axios.get(`http://localhost:4000/fetchTaskid/${optionname}`,
+
+  {
+  
+  }).then(response=>{
+   
+     
+     var taskid=response.data[0].Taskid
+    
+     setFetchid(taskid)
+
+         
+     Axios.get(`http://localhost:4000/fetchdisplay/${taskid}`,
+     { 
+        
+     }).then(response=>{
+         
+          
+    setItems(response.data)
+   
+      
+    
+     
+       })
+        .catch(err=>{
+          console.log(err)
+        
+        })
+   
+
+ 
+  })
+  .catch(err=>{
+    console.log(err)
+  
+               })
+// SetUsername( response.data[0].user)
+  
+}, []);
+
+
+
 
 
 
     const getTask=(e)=>{
-     
-
-       Axios.get("http://localhost:4000/showselected").then((response)=>
-       settskList(response.data)
       
-         )    
-    
+
+      Axios.get(`http://localhost:4000/showselected/${fetchid}`,{
+        
+
+      }).then((response)=>
+      settskList(response.data)
+     
+        )  
 
         setShowallCheck(e.target.checked)
                        }
@@ -175,6 +230,7 @@ setIsEditItem(id)
 
 
 const updateTaskStatus=(txt,status)=>{
+    // alert("update"+txt)
      
 Axios.put("http://localhost:4000/Childupdate",
    { status:status,txtupdate:txt}).then((response)=>
@@ -217,26 +273,30 @@ Axios.put("http://localhost:4000/Childupdate",
                           { 
     
     items.map((elm,ind)=>{
+   
   
         return(
           
          
                 <div class="hhh" key={ind}>
-
-                <input type="checkbox"  name="taskname"    onChange={(e)=>{
-                
-                 setItems(items.filter(obj2=>{
                   
 
-                  if(obj2.id===elm.id){
+                <input type="checkbox"  name="taskname"   onChange={(e)=>{
+                  alert("elmout"+elm.childtodo_id)
+                
+                 setItems(items.filter(obj2=>{
+//alert("inobjtaskid"+obj2.childtodo_id)
+                   // alert("inelmtaskid"+elm.childtodo_id)
           
-                   obj2.status=e.target.checked
+                  if(obj2.childtodo_id===elm.childtodo_id){
+                    
+                   obj2.child_status=e.target.checked
 
-  
+  //alert("in child"+obj2.child_status)
             
                
-               updateTaskStatus(obj2.text,obj2.status)
-          
+               updateTaskStatus(obj2.childtask_name,obj2.child_status)
+                  
                          
                   }
                   return obj2
@@ -244,17 +304,20 @@ Axios.put("http://localhost:4000/Childupdate",
                  
                  })
                  )}
+                 
+                
+                 
                
-                 } value={elm.text} checked={elm.status} class="optionbtn" name="option"
+                 } value={elm.childtask_name} checked={elm.child_status} class="optionbtn" name="option"
                 
                  />
                  
                             
                 
  
-         <label style={{textDecoration:elm.status?"line-through":"none"} }  name="text">{elm.text}</label>
-         <img title="edit item" class="editimg" src="https://img.icons8.com/color/48/000000/edit-property.png" onClick={()=>editItem(elm.id)}/>
-         <i class="fa fa-trash" title="delete Item" onClick={()=>deleteItem(ind,elm.text)}></i>
+         <label style={{textDecoration:elm.child_status?"line-through":"none"} }  name="text">{elm.childtask_name}</label>
+         <img title="edit item" class="editimg" src="https://img.icons8.com/color/48/000000/edit-property.png" onClick={()=>editItem(elm.childtodo_id)}/>
+         <i class="fa fa-trash" title="delete Item" onClick={()=>deleteItem(ind,elm.childtask_name)}></i>
 
           
               </div>
@@ -314,11 +377,14 @@ Axios.put("http://localhost:4000/Childupdate",
 
 
 
- </div>
-                  <span class="newbtn"><input type="button"  class="newbtn" value= " +   Cancel"  onClick={()=>history.push("/")} /></span> 
 
-                         
+</div>
+                      
       
+
+ 
+                  <span class="newbtn"><input type="button"  class="newbtn" value= " +   Cancel"  onClick={()=>history.push("/")} /></span> 
+                  
       
  </div>
  </div>

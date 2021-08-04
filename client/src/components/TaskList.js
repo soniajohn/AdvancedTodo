@@ -63,7 +63,9 @@ const Tasklist=()=>{
         }).then(()=>{
           alert("successful insert")});
           addItem();
-        
+       
+     
+
                     }
        else{
        setTaskvalue("please fill the field");
@@ -155,49 +157,20 @@ const Tasklist=()=>{
           setItems(response.data)
         
           
-       //   usertasklist.map((elem)=>{
-         //alert(elem.Taskname)
-       //  setUsertasklist(elem.Taskname);
-        // setUsertasklist(elem.Taskname);
-        // alert(usertasklist)
-         // })
+       
             })
             .catch(err=>{
               console.log(err)
             
             })
-          // SetUsername( response.data[0].user)
-            
-        }, []);
           
-
-
-
-
-          
-   
             
+        }, []);           
       
            
                 
          
-          
-            
-                            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                  
 
 
         const deleteTask=(task_del)=>{
@@ -247,7 +220,7 @@ const Tasklist=()=>{
 
                           });
          setToggleBtn(false);
-         alert(newEditItem.Taskname)
+        // alert(newEditItem.Taskname)
           setTasks(newEditItem.Taskname)
           setIsEditItem(id)
 
@@ -278,7 +251,7 @@ const Tasklist=()=>{
                      
                           <div class="secondcontainer">
                             
-                          <label class="heading"> {username}{userid}</label> <br></br> 
+                          <label class="heading"> Hi...{username}</label> <br></br> 
                           
                         <span class="thirdcontainer">
                           <input type="text"  ref={inputRef} class="todonametxt" title={validatevalue} value={task}autoComplete="off" maxLength="20" onChange={(e)=>passData(e.target.value)}></input>&nbsp;&nbsp;

@@ -17,6 +17,7 @@ const db=mysql.createPool({
     database:"advancedtodo",
                           });
     app.post('/taskinsert',(req,res)=>{
+        
     
     const task_name=req.body.task;
     const userid=req.body.userid
@@ -32,6 +33,7 @@ const db=mysql.createPool({
 
        
                                          })
+                                         
   
 
 });
@@ -43,14 +45,15 @@ app.post("/childinsert",(req,res)=>{
 
     const tname=req.body.task
     const childname=req.body.text
-     
+    const Taskid=req.body.Taskid
     const today=new Date();
-   
+    //console.log("Taskid="+Taskid)
+  //  console.log("tname="+tname)
     const date=today.getDay()+"-"+today.getMonth()+"-"+today.getFullYear();
-    
+   // console.log("date="+date)
   
-    const sqlInsert="INSERT INTO childtodo(childtask_name,child_date,Taskname) VALUES(?,?,?)"
-    db.query(sqlInsert,[tname,date,childname],(err,result)=>{
+    const sqlInsert="INSERT INTO childtodo(Taskid,childtask_name,child_date) VALUES(?,?,?)"
+    db.query(sqlInsert,[Taskid,tname,date],(err,result)=>{
        
     })
 
@@ -65,13 +68,14 @@ app.post("/childinsert",(req,res)=>{
         const ename=req.body.email
         const password=req.body.password
         const cpassword=req.body.cpassword
-         console.log(fname)
-         console.log(lname)
+        
+       //  console.log(fname)
+        // console.log(lname)
          const sqlInsert="INSERT INTO user_info(f_name,l_name,email,password,cpassword) VALUES(?,?,?,?,?)"
          db.query(sqlInsert,[fname,lname,ename,password,cpassword],(err,result)=>{
             
          })
-          
+
         
         });
 
@@ -101,10 +105,10 @@ app.post("/childinsert",(req,res)=>{
             })
            // console.log(email)
             
-
+db.end
 ///////////////////////
               
-            db.end;
+            
             });
     
 
@@ -116,7 +120,7 @@ app.delete("/delete/:task_del",(req,res)=>{
 
 
     const task_del=req.params.task_del;
-   console.log(task_del)
+  // console.log(task_del)
        
        db.query("DELETE FROM Tasks WHERE Taskname=?",task_del,(err,result)=>{
         if(err){
@@ -127,6 +131,8 @@ app.delete("/delete/:task_del",(req,res)=>{
         }
 
     });
+    
+
 
 });
 
@@ -148,7 +154,29 @@ db.query("SELECT Taskname FROM Tasks WHERE Tasks.user_id=?",[user],(err,result)=
  
  });
 
+///////////////////////////////////////////
+app.get("/fetchdisplay/:taskid",(req,res)=>{
 
+    const childid=req.params.taskid;
+ //console.log("child="+childid)
+db.query("SELECT childtodo_id,childtask_name,child_status FROM childtodo WHERE childtodo.Taskid=?",[childid],(err,result)=>{
+   if(err){
+       console.log(err)
+    }
+   else{
+     res.send(result)
+  }
+ })
+
+ 
+ });
+
+
+
+
+
+
+///////////////////////////////////////////////////
 
 
 
@@ -165,8 +193,10 @@ app.put("/Childupdate",(req,res)=>{
 
     const tname=req.body.txtupdate
     const status=req.body.status
+
     
-    
+    console.log("first="+tname)
+    console.log("sec="+status)
     
     db.query("UPDATE childtodo SET child_status=? WHERE childtask_name=?",[status,tname],(err,result)=>{
     
@@ -183,7 +213,7 @@ app.put("/Childupdate",(req,res)=>{
         }
        );
     
-    
+   // db.end
       });
 
 
@@ -203,7 +233,20 @@ app.put("/Childupdate",(req,res)=>{
 
 
 
+     app.get("/fetchTaskid/:optionname",(req,res)=>{
 
+        const user=req.params.optionname;
+      //  console.log(user)
+        db.query("SELECT Taskid FROM Tasks where Taskname=?",[user],(err,result)=>{
+         if(err){
+             console.log(err)
+         }
+         else{
+             res.send(result)
+         }
+     })
+     
+     });
 
 
 
@@ -232,10 +275,10 @@ app.put("/Childupdate",(req,res)=>{
 
     
 
-     app.get("/showselected",(req,res)=>{
-
-        
-        db.query("SELECT * FROM childtodo WHERE child_status=1",(err,result)=>{
+     app.get("/showselected/:Taskid",(req,res)=>{
+       const  Taskid=req.params.Taskid
+        console.log(Taskid)
+        db.query("SELECT * FROM childtodo WHERE child_status=? && Taskid=?",[1,Taskid],(err,result)=>{
          if(err){
              console.log(err)
          }

@@ -34,7 +34,11 @@ function App()
                  <Route exact path="/signupinsert"  component={SignUp } />
                  <Route exact path="/logininsert"  component={Login } />
                  <Route exact path="/fetchData/:userid"  component={Tasklist} />
-
+                 <Route exact path="/fetchTaskid"  component={ChildList } />
+                 <Route exact path="/back"  component={Tasklist} />
+                 <Route exact path="/fetchdisplay/:taskid"  component={ChildList } />
+                 <Route exact path="/showselected/:fetchid"  component={ChildList } />
+ 
               </Switch> 
               
            </Router>

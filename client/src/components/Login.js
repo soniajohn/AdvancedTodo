@@ -1,4 +1,4 @@
-import react, { useState } from 'react';
+import react, { useRef,useState ,useEffect} from 'react';
 
 import Axios from 'axios';
 import { Redirect } from 'react-router-dom';
@@ -19,24 +19,37 @@ import{useContext} from 'react';
 
 const Login=()=>{
 
-  const{username,SetUsername,userid,SetUserid}=useContext(ListContext);
-  const [loginstatus,SetLoginstatus]=useState("")
+   const{username,SetUsername,userid,SetUserid}=useContext(ListContext);
+   const [loginstatus,SetLoginstatus]=useState("")
+   const [textstatus,Settextstatus]=useState("")
   
-  let history=useHistory();
+   let history=useHistory();
 
-  const [user,setUser] = useState({
+   const [user,setUser] = useState({
 
     email:"",password:""
     
       });
       
-      let name,value;
+      
+      let name,value,bool;
       const handleInputs=(e)=>{
-    
+      
         name=e.target.name;
+       // alert("name="+name)
         value=e.target.value;
+        if(name==="email"){
+          const emailRegex = /\S+@\S+\.\S+/;
+        if (emailRegex.test(value)) {
+          Settextstatus("")
         
-           
+        
+        } else{
+          Settextstatus("not valid email");
+       
+        }
+        
+      }
     
         setUser({...user,[name]:value});
     
@@ -55,7 +68,7 @@ const Login=()=>{
           }).then((response)=>{
           
            if(response.data.message){
-
+               Settextstatus("")
              SetLoginstatus(response.data.message)
            //  alert(response.data.message)
            }
@@ -82,9 +95,19 @@ const Login=()=>{
                 // cancelData();   
                     
            };  
+
+
+     
+          
+
+
+
     
          const cancelData = () => { 
          setUser({email:" ",password:" "})
+         SetLoginstatus(" ")
+         Settextstatus(" ")
+         
           }
        
 
@@ -102,12 +125,13 @@ const Login=()=>{
                           <label class="todolbl" >Login</label><br></br>
                           <label class="todolbl2" >Login with E-mail</label><br></br>
                         <span class="thirdcontainer">
-                          <input type="text"  name="email" class="todonametxt" value={user.email} autoComplete="off" maxLength="20" onChange={handleInputs} ></input>&nbsp;&nbsp;
+                          <input type="text"  name="email" class="todonametxt"   value={user.email} autoComplete="off" maxLength="20" onChange={handleInputs} ></input>&nbsp;&nbsp;
                           </span><br></br>
+                          <p>{textstatus}</p>
                           <label class="todolbl" >Password</label><br></br>
                           
                         <span class="thirdcontainer">
-                          <input type="text" name="password"  class="todonametxt" value={user.password} autoComplete="off" maxLength="20" onChange={handleInputs} ></input>&nbsp;&nbsp;
+                          <input type="password" name="password"  class="todopasstxt" value={user.password} autoComplete="off" maxLength="20" onChange={handleInputs} ></input>&nbsp;&nbsp;
                           </span>
                           <p>{loginstatus}</p>
                           <div class="btnclass">
