@@ -59,6 +59,7 @@ const ChildList=()=>{
 
 
         const deleteTask=(task_del)=>{
+         // alert("del="+task_del)
 
           Axios.delete(`http://localhost:4000/childdelete/${task_del}`);
       
@@ -94,8 +95,11 @@ const ChildList=()=>{
     if(!task){
     }else if(task && !toggleBtn){
 
-      setItems(
-        items.map((elem)=>{
+        setItems(
+           items.map((elem)=>{
+          
+          //alert("elem="+elem.childtodo_id)
+         // alert("isedit="+isEditItem)
           if(elem.childtodo_id===isEditItem){
              setToggleBtn(true)
           
@@ -111,7 +115,7 @@ const ChildList=()=>{
       
       )
     } else{
-    setItems([{id:Date.now(),childtask_name:task,child_status:false},...items]);
+    setItems([{childtodo_id:Date.now(),childtask_name:task,child_status:false},...items]);
 
     setTasks("")
    
@@ -119,8 +123,8 @@ const ChildList=()=>{
 
 
 
- const inputRef = useRef();
- useEffect(() => {
+  const inputRef = useRef();
+  useEffect(() => {
   inputRef.current.focus();
 
                   })
@@ -128,8 +132,8 @@ const ChildList=()=>{
 
 
 
- const submitTask=()=>{
-        
+  const submitTask=()=>{
+      
         
   if(task){
       Axios.post("http://localhost:4000/childinsert",{
@@ -145,14 +149,14 @@ const ChildList=()=>{
              }
        
       
-                        };  
+                     };  
 
 
  
    const editItem=(id)=>{
-  
-    let newEditItem=items.find((elem)=>{
-    
+      let newEditItem=items.find((elem)=>{
+    //alert("elem="+elem.childtodo_id)
+     //alert("id="+id)
     
     return elem.childtodo_id===id
 
@@ -164,9 +168,10 @@ const ChildList=()=>{
 
          }
 
+ 
 
 
-useEffect(() => {
+  useEffect(() => {
      
   Axios.get(`http://localhost:4000/fetchTaskid/${optionname}`,
 
@@ -185,10 +190,11 @@ useEffect(() => {
         
      }).then(response=>{
          
-          
-    setItems(response.data)
-   
-      
+    //setItems([{id:Date.now(),childtask_name:task,child_status:false});
+ 
+     setItems(response.data)
+    
+       
     
      
        })
@@ -213,14 +219,14 @@ useEffect(() => {
 
 
 
-    const getTask=(e)=>{
+  const getTask=(e)=>{
       
 
-      Axios.get(`http://localhost:4000/showselected/${fetchid}`,{
+       Axios.get(`http://localhost:4000/showselected/${fetchid}`,{
         
 
-      }).then((response)=>
-      settskList(response.data)
+        }).then((response)=>
+        settskList(response.data)
      
         )  
 
@@ -229,19 +235,21 @@ useEffect(() => {
 
 
 
-const updateTaskStatus=(txt,status)=>{
+
+
+  const updateTaskStatus=(txt,status)=>{
     // alert("update"+txt)
      
-Axios.put("http://localhost:4000/Childupdate",
-   { status:status,txtupdate:txt}).then((response)=>
+      Axios.put("http://localhost:4000/Childupdate",
+      { status:status,txtupdate:txt}).then((response)=>
   
-   { alert("update");
+      { alert("update");
 
-   }
+      }
     
-   );
+     );
    
-  }
+   }
 
 
 
@@ -274,7 +282,8 @@ Axios.put("http://localhost:4000/Childupdate",
     
     items.map((elm,ind)=>{
    
-  
+    
+   
         return(
           
          
@@ -282,17 +291,17 @@ Axios.put("http://localhost:4000/Childupdate",
                   
 
                 <input type="checkbox"  name="taskname"   onChange={(e)=>{
-                  alert("elmout"+elm.childtodo_id)
+                // alert("elmout"+elm.id)
                 
                  setItems(items.filter(obj2=>{
-//alert("inobjtaskid"+obj2.childtodo_id)
-                   // alert("inelmtaskid"+elm.childtodo_id)
-          
+
+                 
+         
                   if(obj2.childtodo_id===elm.childtodo_id){
                     
                    obj2.child_status=e.target.checked
 
-  //alert("in child"+obj2.child_status)
+  
             
                
                updateTaskStatus(obj2.childtask_name,obj2.child_status)
@@ -305,17 +314,17 @@ Axios.put("http://localhost:4000/Childupdate",
                  })
                  )}
                  
-                
+            
                  
                
-                 } value={elm.childtask_name} checked={elm.child_status} class="optionbtn" name="option"
+                 } value={elm.childtask_name} checked={elm.child_status==0?false:true} class="optionbtn" name="option"
                 
                  />
                  
                             
                 
  
-         <label style={{textDecoration:elm.child_status?"line-through":"none"} }  name="text">{elm.childtask_name}</label>
+         <label style={{textDecoration:elm.child_status==1?"line-through":"none"} }  name="text">{elm.childtask_name}</label>
          <img title="edit item" class="editimg" src="https://img.icons8.com/color/48/000000/edit-property.png" onClick={()=>editItem(elm.childtodo_id)}/>
          <i class="fa fa-trash" title="delete Item" onClick={()=>deleteItem(ind,elm.childtask_name)}></i>
 
@@ -383,7 +392,7 @@ Axios.put("http://localhost:4000/Childupdate",
       
 
  
-                  <span class="newbtn"><input type="button"  class="newbtn" value= " +   Cancel"  onClick={()=>history.push("/")} /></span> 
+                  <span class="newbtn"><input type="button"  class="newbtn" value= " +   Cancel"  onClick={()=>history.push("/taskinsert")} /></span> 
                   
       
  </div>

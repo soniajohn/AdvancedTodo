@@ -11,12 +11,6 @@ import{useContext} from 'react';
 
 
 
-
-
-
-
-
-
 const Login=()=>{
 
    const{username,SetUsername,userid,SetUserid}=useContext(ListContext);
@@ -35,19 +29,19 @@ const Login=()=>{
       let name,value,bool;
       const handleInputs=(e)=>{
       
-        name=e.target.name;
+         name=e.target.name;
        // alert("name="+name)
-        value=e.target.value;
+         value=e.target.value;
         if(name==="email"){
-          const emailRegex = /\S+@\S+\.\S+/;
+            const emailRegex = /\S+@\S+\.\S+/;
         if (emailRegex.test(value)) {
-          Settextstatus("")
+             Settextstatus("")
         
         
-        } else{
+      } else{
           Settextstatus("not valid email");
        
-        }
+          }
         
       }
     

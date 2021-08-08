@@ -34,7 +34,7 @@ const db=mysql.createPool({
        
                                          })
                                          
-  
+  db.end
 
 });
 
@@ -47,8 +47,8 @@ app.post("/childinsert",(req,res)=>{
     const childname=req.body.text
     const Taskid=req.body.Taskid
     const today=new Date();
-    //console.log("Taskid="+Taskid)
-  //  console.log("tname="+tname)
+    console.log("Taskid="+Taskid)
+  console.log("tname="+tname)
     const date=today.getDay()+"-"+today.getMonth()+"-"+today.getFullYear();
    // console.log("date="+date)
   
@@ -75,7 +75,7 @@ app.post("/childinsert",(req,res)=>{
          db.query(sqlInsert,[fname,lname,ename,password,cpassword],(err,result)=>{
             
          })
-
+db.end
         
         });
 
@@ -140,9 +140,9 @@ app.delete("/delete/:task_del",(req,res)=>{
 app.get("/fetchData/:userid",(req,res)=>{
 
     const user=req.params.userid;
-  //  console.log("userid="+user)
+   console.log("userid="+user)
 
-db.query("SELECT Taskname FROM Tasks WHERE Tasks.user_id=?",[user],(err,result)=>{
+db.query("SELECT Tasks.Taskid,Taskname FROM Tasks WHERE Tasks.user_id=?",[user],(err,result)=>{
    if(err){
        console.log(err)
     }
@@ -260,6 +260,8 @@ app.put("/Childupdate",(req,res)=>{
     app.delete("/childdelete/:task_del",(req,res)=>{
 
         const task_del=req.params.task_del;
+        console.log("hhhh")
+        console.log("task_del="+task_del)
         
         db.query("DELETE FROM childtodo WHERE childtask_name=?",task_del,(err,result)=>{
             if(err){
@@ -295,6 +297,8 @@ app.put("/Childupdate",(req,res)=>{
 
       const originaltxt=req.body.original_txt
       const tname=req.body.tasname
+    console.log(originaltxt)
+    console.log(tname)
     
       db.query("UPDATE Tasks SET Taskname=? WHERE Taskname=?",[tname,originaltxt],(err,result)=>{
     
@@ -319,6 +323,8 @@ app.put("/childedit",(req,res)=>{
 
     const originaltxt=req.body.original_txt
    const tname=req.body.tasname
+   console.log("original="+originaltxt)
+   console.log("tname"+tname)
 
   db.query("UPDATE childtodo SET childtask_name=? WHERE childtask_name=?",[tname,originaltxt],(err,result)=>{
 

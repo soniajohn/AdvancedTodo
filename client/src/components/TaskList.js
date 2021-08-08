@@ -24,6 +24,7 @@ const Tasklist=()=>{
     const[validatevalue,setValidatevalue]=useState("")
     const[fetchlist,setFetchlist]=useState([])
     const[showList,setshowList]=useState([])
+    
     let history=useHistory();
 
     const[usertasklist,setUsertasklist]=useState([])
@@ -99,13 +100,6 @@ const Tasklist=()=>{
 
 
 
-
-
-
-
-
-
-
           
 
           const updateTask=(tasname,txt)=>{
@@ -153,14 +147,14 @@ const Tasklist=()=>{
          { userid:userid}
             
             ).then(response=>{
-              console.log(response)
-          setItems(response.data)
-        
-          
+             
+       setItems(response.data)
+      // setItems([{Taskid:response.data[0].Taskid,Taskname:task,status:false},...items]); 
        
             })
             .catch(err=>{
               console.log(err)
+              
             
             })
           
@@ -186,7 +180,8 @@ const Tasklist=()=>{
 
                   setItems(
                   items.map((elem)=>{
-                              if(elem.id===isEditItem){
+                    
+                              if(elem.Taskid===isEditItem){
                               setToggleBtn(true)
           
                               setTasks(" ")
@@ -199,7 +194,9 @@ const Tasklist=()=>{
       
                            )
                      } else{
-                         setItems([{id:Date.now(),Taskname:task,status:false},...items]);
+                      
+                        
+                         setItems([{Taskid:Date.now(),Taskname:task,status:false},...items]);
 
                           setTasks("");
                           setValidatevalue("");
@@ -215,13 +212,14 @@ const Tasklist=()=>{
       const editItem=(id)=>{
   
         let newEditItem=items.find((elem)=>{
-        
-        return elem.id===id
+      //  alert("id="+id)
+        return elem.Taskid===id
 
                           });
          setToggleBtn(false);
-        // alert(newEditItem.Taskname)
+        // alert("new="+newEditItem.Taskname)
           setTasks(newEditItem.Taskname)
+         // alert("id="+id)
           setIsEditItem(id)
 
 
@@ -279,7 +277,7 @@ const Tasklist=()=>{
                  setItems(items.filter(obj2=>{
                   
 
-                  if(obj2.id===elm.id){
+                  if(obj2.childtodo_id===elm.childtodo_id){
           
                    obj2.status=e.target.checked
 
@@ -306,7 +304,7 @@ const Tasklist=()=>{
                 
  
          <label name="text">{elm.Taskname}</label>
-         <img title="edit item" class="editimg" src="https://img.icons8.com/color/48/000000/edit-property.png" onClick={()=>editItem(elm.id)}/>
+         <img title="edit item" class="editimg" src="https://img.icons8.com/color/48/000000/edit-property.png" onClick={()=>editItem(elm.Taskid)}/>
          <i class="fa fa-trash" title="delete Item" onClick={()=>deleteItem(ind,elm.Taskname)}></i>
 
           

@@ -7,9 +7,8 @@ export const ListContext=createContext()
          const [optionname,setOptionname] = useState("");
          const[username,SetUsername]=useState("")
          const[userid,SetUserid]=useState("")
-    
-      
-
+         
+          
       return(
             <ListContext.Provider value={{optionname,setOptionname,username,SetUsername,userid,SetUserid}}>
                
