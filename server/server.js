@@ -260,7 +260,7 @@ app.put("/Childupdate",(req,res)=>{
     app.delete("/childdelete/:task_del",(req,res)=>{
 
         const task_del=req.params.task_del;
-        console.log("hhhh")
+        
         console.log("task_del="+task_del)
         
         db.query("DELETE FROM childtodo WHERE childtask_name=?",task_del,(err,result)=>{
