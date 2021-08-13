@@ -21,7 +21,7 @@ const ChildList=()=>{
     const[showallCheck,setShowallCheck]=useState("")
     const{username,SetUsername,userid,SetUserid}=useContext(ListContext);
     const[fetchid,setFetchid]=useState([])
-  
+    const[getid,setGetid]=useState(1)
     let history=useHistory();
 
     
@@ -58,22 +58,26 @@ const ChildList=()=>{
 
 
 
-        const deleteTask=(task_del)=>{
+        const deleteTask=(childtask_id)=>{
          // alert("del="+task_del)
+         let taskid=childtask_id
+         let todolistId=fetchid
+         alert(taskid)
 
-          Axios.delete(`http://localhost:4000/childdelete/${task_del}`);
+          Axios.delete(`http://localhost:4000/users/${userid}/todolists/${todolistId}/tasks/${taskid}`);
       
              };
 
 
 
          
-          const updateTask=(tasname,txt)=>{
-            
-                       
-          Axios.put("http://localhost:4000/childedit",
+          const updateTask=(tasname,childtodo_id)=>{
+            let taskid=childtodo_id,todolistid=fetchid
+alert("hihi")
+alert(taskid)                       
+          Axios.put(`http://localhost:4000/users/${userid}/todolists/${todolistid}/tasks/${taskid}`,
               {
-                tasname:tasname,original_txt:txt
+                tasname:tasname
               
               }).then((response)=>
             
@@ -106,7 +110,7 @@ const ChildList=()=>{
               setTasks(" ")
             
             
-              updateTask(task,elem.childtask_name)
+              updateTask(task,elem.childtodo_id)
               return{...elem,childtask_name:task}
             
                            }
@@ -115,7 +119,10 @@ const ChildList=()=>{
       
       )
     } else{
-    setItems([{childtodo_id:Date.now(),childtask_name:task,child_status:false},...items]);
+
+      setGetid(parseInt(getid+1))
+                     alert(getid)
+    setItems([{childtodo_id:getid,childtask_name:task,child_status:false},...items]);
 
     setTasks("")
    
@@ -133,14 +140,15 @@ const ChildList=()=>{
 
 
   const submitTask=()=>{
-      
+   
+   let todolistid=fetchid
         
   if(task){
-      Axios.post("http://localhost:4000/childinsert",{
+      Axios.post(`http://localhost:4000/users/${userid}/todolists/${todolistid}/tasks`,{
       task:task,
       text:optionname,
-      Taskid:fetchid
-      
+      Todoid:fetchid,
+      childtask_id:getid
            
    }).then(()=>{
        alert("successful insert")});
@@ -172,20 +180,23 @@ const ChildList=()=>{
 
 
   useEffect(() => {
-     
-  Axios.get(`http://localhost:4000/fetchTaskid/${optionname}`,
+   //let  optionname=fetchid
+  Axios.get(`http://localhost:4000/user/${userid}/todolists/${optionname}`,
 
   {
   
   }).then(response=>{
    
      
-     var taskid=response.data[0].Taskid
+     var todoid=response.data[0].Todoid
     
-     setFetchid(taskid)
+     setFetchid(todoid)
+     alert("getid="+getid)
+     setGetid(parseInt(getid+10))
+     
 
-         
-     Axios.get(`http://localhost:4000/fetchdisplay/${taskid}`,
+     
+     Axios.get(`http://localhost:4000/user/${userid}/todolists/${todoid}`,
      { 
         
      }).then(response=>{
@@ -220,9 +231,10 @@ const ChildList=()=>{
 
 
   const getTask=(e)=>{
-      
-
-       Axios.get(`http://localhost:4000/showselected/${fetchid}`,{
+    
+    let todolistid=fetchid
+   
+       Axios.get(`http://localhost:4000/users/${userid}/todolists/${todolistid}`,{
         
 
         }).then((response)=>
@@ -237,10 +249,12 @@ const ChildList=()=>{
 
 
 
-  const updateTaskStatus=(txt,status)=>{
+  const updateTaskStatus=(txt,status,childtodo_id)=>{
     // alert("update"+txt)
+    let taskid=childtodo_id
+    let todolistId=fetchid
      
-      Axios.put("http://localhost:4000/Childupdate",
+      Axios.put(`http://localhost:4000/users/${userid}/todolists/${todolistId}/taasks/${taskid}`,
       { status:status,txtupdate:txt}).then((response)=>
   
       { alert("update");
@@ -264,7 +278,7 @@ const ChildList=()=>{
                 
                      
                           <div class="secondcontainer">
-                          <button id = "x" class="closebtn"  onClick={()=>{history.push( "/")}}> X</button>
+                          
                    
                           <label class="heading"> {optionname}</label> <br></br> 
                           
@@ -304,7 +318,7 @@ const ChildList=()=>{
   
             
                
-               updateTaskStatus(obj2.childtask_name,obj2.child_status)
+               updateTaskStatus(obj2.childtask_name,obj2.child_status,obj2.childtodo_id)
                   
                          
                   }
@@ -326,7 +340,7 @@ const ChildList=()=>{
  
          <label style={{textDecoration:elm.child_status==1?"line-through":"none"} }  name="text">{elm.childtask_name}</label>
          <img title="edit item" class="editimg" src="https://img.icons8.com/color/48/000000/edit-property.png" onClick={()=>editItem(elm.childtodo_id)}/>
-         <i class="fa fa-trash" title="delete Item" onClick={()=>deleteItem(ind,elm.childtask_name)}></i>
+         <i class="fa fa-trash" title="delete Item" onClick={()=>deleteItem(ind,elm.childtodo_id)}></i>
 
           
               </div>
@@ -392,7 +406,7 @@ const ChildList=()=>{
       
 
  
-                  <span class="newbtn"><input type="button"  class="newbtn" value= " +   Cancel"  onClick={()=>history.push("/taskinsert")} /></span> 
+                  <span class="newbtn"><input type="button"  class="newbtn" value= " +   back"  onClick={()=>history.push("/users/:userid/todolists")} /></span> 
                   
       
  </div>

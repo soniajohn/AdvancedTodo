@@ -6,17 +6,6 @@ import Axios from 'axios';
 
 
 
-
-  
-
-
-
-
-
-
-
-
-
 const SignUp=()=>{
 
 const [txtvalidate,Settxtvalidate]=useState("")
@@ -54,7 +43,7 @@ fname:"",lname:"",email:"",password:"",cpassword:""
     if(user){
     
               
-      Axios.post("http://localhost:4000/signupinsert",{
+      Axios.post("http://localhost:4000/users",{
       
       fname,lname,email,password,cpassword
            
@@ -133,7 +122,7 @@ fname:"",lname:"",email:"",password:"",cpassword:""
                             <p>{txtvalidate}</p>
                           <div class="btnclass">
                           <button  class="todobtn" onClick={registerData}>Register</button>&nbsp;&nbsp;<button class="todobtn" onClick={cancelData }>Reset</button>
-                          <a href="/logininsert" class="signup">Login</a>
+                          <a href="/" class="signup">Login</a>
                           </div>
                           
                         

@@ -20,25 +20,30 @@ function App()
          <>
            <Router> 
               <Switch>
-           
+                  
+              <Route exact path="/"  component={Login } />
+              <Route exact path="/users"  component={SignUp } />
+                  
+              
+              <Route exact path="/users/:userid/todolists"  component={Tasklist} />
+
+
+
+<Route exact path="/users/:userid/todolist/:todolistid" component={ChildList} />
+<Route exact path="/users/:userid/todolists/:todolist_id" component={Tasklist } />
+<Route exact path="/childdelete/:id" component={ChildList } />
+<Route exact path="/users/:userid/todolists/:todolistId/tasks/:taskid" component={ChildList } />
+<Route exact path="/users/:userid/todolists/:todolistid/tasks" component={ChildList } />
+<Route exact path="/signup" component={SignUp } />
+<Route exact path="/logininsert" component={Login } />
+<Route exact path="/fetchData/:userid" component={Tasklist} />
+<Route exact path="/users/:userid/todolists/:todolistid" component={ChildList } />
+<Route exact path="/back" component={Tasklist} />
+<Route exact path="/fetchdisplay/:taskid" component={ChildList } />
+<Route exact path="/showselected/:fetchid" component={ChildList } />
+<Route exact path="/users/:userid" component={Tasklist}/> 
+
                 
-                 <Route exact path="/taskinsert"  component={Tasklist}/> 
-                 <Route exact path="/childlist"  component={ChildList} />
-                 <Route exact path="/delete/:id"  component={Tasklist } />
-                 <Route exact path="/childdelete/:id"  component={ChildList } />
-                 <Route exact path="/edit"  component={Tasklist}/> 
-                 <Route exact path="/Childupdate"  component={ChildList } />
-                 <Route exact path="/childinsert"  component={ChildList } />
-                 <Route exact path="/"  component={Login} />
-                 <Route exact path="/signup"  component={SignUp } />
-                 <Route exact path="/signupinsert"  component={SignUp } />
-                 <Route exact path="/logininsert"  component={Login } />
-                 <Route exact path="/fetchData/:userid"  component={Tasklist} />
-                 <Route exact path="/fetchTaskid"  component={ChildList } />
-                 <Route exact path="/back"  component={Tasklist} />
-                 <Route exact path="/fetchdisplay/:taskid"  component={ChildList } />
-                 <Route exact path="/showselected/:fetchid"  component={ChildList } />
- 
               </Switch> 
               
            </Router>

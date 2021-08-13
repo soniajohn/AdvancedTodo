@@ -55,7 +55,7 @@ const Login=()=>{
         if(user){
         
                   
-          Axios.post("http://localhost:4000/logininsert",{
+          Axios.post(`http://localhost:4000/users/todolists`,{
           
           email,password
                
@@ -80,7 +80,7 @@ const Login=()=>{
            SetUsername(user);
            SetUserid(userid)
                
-           history.push('/taskinsert')
+           history.push('/users/:user/todolists')
            }
         
            });
@@ -130,7 +130,7 @@ const Login=()=>{
                           <p>{loginstatus}</p>
                           <div class="btnclass">
                           <button  class="todobtn" onClick={loginData}>SignIn</button>&nbsp;&nbsp;<button class="todobtn" onClick={cancelData }>Reset</button>
-                          <a href="/signupinsert" class="signup">SignUp</a></div>
+                          <a href="/users" class="signup">SignUp</a></div>
                           
                            
                       
