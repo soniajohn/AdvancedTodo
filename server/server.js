@@ -4,6 +4,7 @@ const app = express();
 const mysql = require("mysql")
 const bodyParser = require("body-parser");
 const { query } = require("express");
+const { json } = require("body-parser");
 
 app.use(cors());
 app.use(express.json());
@@ -81,13 +82,13 @@ app.post("/users", (req, res) => {
     if (password === cpassword) {
         const sqlInsert = "INSERT INTO user_info(f_name,l_name,email,password,cpassword) VALUES(?,?,?,?,?)"
         db.query(sqlInsert, [fname, lname, ename, password, cpassword], (err, result) => {
-            if(err){
+            if (err) {
                 res.status(500)
                 res.json("user creation failed")
             }
-            else{
+            else {
                 res.status(200)
-                res.json({id:`${result.insertId}`})
+                res.json({ id: `${result.insertId}` })
                 console.log(result)
             }
 
@@ -96,7 +97,7 @@ app.post("/users", (req, res) => {
         db.end
 
     }
-    else{
+    else {
         res.status(500)
         res.json("failed to add user, password doesn't match")
     }
@@ -143,38 +144,39 @@ app.delete("/users/:userid/todolists/:todolist_id", (req, res) => {
 
 
     const todolist_id = req.params.todolist_id;
+    const userid = req.params.userid;
     console.log(todolist_id)
-
+    db.query("Delete from childTasks where Todoid=?",todolist_id)
     db.query("DELETE FROM Todos WHERE Todoid=?", todolist_id, (err, result) => {
         if (err) {
+
+
+            res.status(500)
             console.log(err)
+            res.json("no record deleted")
         }
         else {
-            res.send(result)
+            res.status(200)
+            res.json({ todolistid: `${result}` })
+            console.log(result)
         }
+
+
+
+
+
+
+
+    })
+
 
     });
 
 
 
-});
-
-app.get("/users/todolists", (req, res) => {
-    const user_id = req.body.userid
-
-    db.query("SELECT max(Todoid) from Todos where Todos.user_id=? ", [user_id], (err, result) => {
 
 
-        if (err) {
-            console.log(err)
-        }
-        else {
-            res.send(result)
 
-        }
-
-    })
-});
 
 
 
@@ -186,36 +188,58 @@ app.get("/users/:userid/todolists", (req, res) => {
 
     const user = req.params.userid;
     console.log("userid=" + user)
-
-    db.query("SELECT Todoid,Todoname FROM Todos WHERE Todos.user_id=?", [user], (err, result) => {
-        if (err) {
-            console.log(err)
-        }
-        else {
-            res.send(result)
-        }
-    })
-
-
-    ////////////////////////////
+    if (user) {
+        db.query("SELECT Todoid,Todoname FROM Todos WHERE Todos.user_id=?", [user], (err, result) => {
+            if (err) {
+                res.status(500)
+                res.json("No match Found")
+            }
+            else {
+                res.status(200)
+                res.json({ data: `${result}` })
+                console.log(result)
 
 
+            }
 
 
-});
+        })
+
+    }
+    
+})
+
+
+////////////////////////////
+
+
+
+
+
 
 ///////////////////////////////////////////
-app.get("/user/:userid/Todolists/:todoid", (req, res) => {
+app.get("/users/:userid/Todolists/:todoid/tasks", (req, res) => {
 
     const childid = req.params.todoid;
+    const userid = req.params.userid;
     console.log("child=" + childid)
     db.query("SELECT childtodo_id,childtask_name,child_status FROM childTasks WHERE childTasks.Todoid=?", [childid], (err, result) => {
-        if (err) {
-            console.log(err)
-        }
-        else {
-            res.send(result)
-        }
+        
+
+            if (err) {
+                res.status(500)
+                res.json("No match Found")
+            }
+            else {
+                res.status(200)
+                res.json({ data:`${result}`} )
+                console.log(result)
+
+
+            }
+        
+
+    
     })
 
 
@@ -248,16 +272,19 @@ app.put("/users/:userid/todolists/:todolistId/tasks/:taskid", (req, res) => {
     console.log("sec=" + status)
     console.log("ch=" + childtodo_id)
 
-    db.query("UPDATE childTasks SET child_status=? WHERE childtodo_id=?", [status, childtodo_id], (err, result) => {
+    db.query("UPDATE childTasks SET child_status=? WHERE childtodo_id=?", [0, childtodo_id], (err, result) => {
 
         if (err) {
-
-            console.log(err)
-        } else {
-
-            res.send(result);
+            res.status(500)
+            res.json("No record updated")
         }
+        else {
+            res.status(200)
+            res.json({ data:`${result}`} )
+            console.log(result)
 
+
+        }
 
     }
     );
