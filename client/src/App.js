@@ -26,22 +26,12 @@ function App()
                   
               
               <Route exact path="/users/:userid/todolists"  component={Tasklist} />
+              <Route exact path="/users/:userid/todolists/:todolistId/tasks" component={ChildList } />
+              <Route exact path="/users/:userid/todolists/:todolistId/tasks/:taskid" component={ChildList } />
+              <Route exact path="/users/:userid/todolist/:todolistId/tasks/:taskid" component={ChildList } />
+               
 
 
-
-<Route exact path="/users/:userid/todolist/:todolistid" component={ChildList} />
-<Route exact path="/users/:userid/todolists/:todolist_id" component={Tasklist } />
-<Route exact path="/childdelete/:id" component={ChildList } />
-<Route exact path="/users/:userid/todolists/:todolistId/tasks/:taskid" component={ChildList } />
-<Route exact path="/users/:userid/todolists/:todolistid/tasks" component={ChildList } />
-<Route exact path="/signup" component={SignUp } />
-<Route exact path="/logininsert" component={Login } />
-<Route exact path="/fetchData/:userid" component={Tasklist} />
-<Route exact path="/users/:userid/todolists/:todolistid" component={ChildList } />
-<Route exact path="/back" component={Tasklist} />
-<Route exact path="/fetchdisplay/:taskid" component={ChildList } />
-<Route exact path="/showselected/:fetchid" component={ChildList } />
-<Route exact path="/users/:userid" component={Tasklist}/> 
 
                 
               </Switch> 
