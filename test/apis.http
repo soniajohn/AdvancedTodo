@@ -1,1 +1,132 @@
+# POST http://localhost:4000/users HTTP/1.1
+# Content-Type: application/json
 
+
+# {
+# "fname":"mini",
+# "lname":"john",
+# "email":"mini@yahoo.com",
+# "password":"mini",
+# "cpassword":"mini"
+
+# }
+
+
+
+
+
+#GET  http://localhost:4000/users
+
+
+ #GET http://localhost:4000/users/87
+
+
+
+
+
+
+
+#PUT http://localhost:4000/users/51/todolist/30/tasks/11 HTTP/1.1
+ #content-type: application/json
+
+ #{
+  #   "taskname":"sss"
+    
+ #}
+
+
+cdc
+
+
+
+
+
+
+
+PUT http://localhost:4000/users/87 HTTP/1.1
+
+ Content-Type: application/json
+
+
+{
+   "f_name": "riya",
+ "l_name":"john"
+  }
+
+
+   
+
+
+
+
+
+//DELETE  http://localhost:4000/users/51
+
+
+# POST http://localhost:4000/users/51/todolists HTTP/1.1
+# Content-Type: application/json
+
+
+# {
+# "task":"work"
+ 
+
+#  }
+
+
+
+#  GET http://localhost:4000/users/51/todolists
+
+
+# Get http://localhost:4000/users/51/todolists/30
+ 
+ 
+# put  http://localhost:4000/users/51/todolists/31 HTTP/1.1
+# Content-Type: application/json
+
+
+# {
+# "todoname":"hello"
+ 
+
+#  }
+
+
+
+#  DELETE http://localhost/users/51/todolists/31
+
+
+# POST http://localhost:4000/users/51/todolists/30/tasks HTTP/1.1
+# Content-Type: application/json
+
+
+#  {
+
+# "task":"dede"
+ 
+
+#  }
+
+
+
+
+# GET  http://localhost:4000/users/51/todolists/30/tasks
+
+
+
+# GET  http://localhost:4000/users/51/todolists/30/tasks/14
+
+
+
+
+# put  http://localhost:4000/users/51/todolists/31/tasks/11 HTTP/1.1
+# Content-Type: application/json
+
+
+# {
+# "taskname":"hello"
+ 
+
+#  }
+
+# DELETE http://localhost:4000/users/51/todolists/30/tasks/11 HTTP/1.1

@@ -57,7 +57,7 @@ const ChildList = () => {
 
 
   const deleteTask = (child_id) => {
-    // alert("del="+task_del)
+    alert("del="+child_id)
     let taskid = child_id
     let todolistId = childtaskid
     
@@ -77,7 +77,7 @@ const ChildList = () => {
     
     Axios.put(`http://localhost:4000/users/${userid}/todolist/${todolistId}/tasks/${taskid}`,
       {
-        tasname: tasname
+        taskname: tasname
 
       }).then((response) => {
         alert("update");
@@ -142,7 +142,8 @@ const ChildList = () => {
   const submitTask = () => {
 
     let todolistid = childtaskid
-
+alert("childtask"+childtaskid)
+alert("tas+"+task)
     if (task) {
       Axios.post(`http://localhost:4000/users/${userid}/todolists/${todolistid}/tasks`, {
         task: task,
@@ -162,11 +163,12 @@ const ChildList = () => {
   };
 
 
-
   const editItem = (id) => {
+
     let newEditItem = items.find((elem) => {
      
-
+alert("id="+id)
+alert("el="+elem.childtodo_id)
       return elem.childtodo_id === id
 
     });
@@ -191,7 +193,7 @@ const ChildList = () => {
 
 
        var todoid = response.data[0].childtodo_id
-      
+      alert("res="+todoid)
         setItems(response.data)
        
 
@@ -310,7 +312,7 @@ const ChildList = () => {
 
 
 
-                    } value={elm.childtask_name} checked={elm.child_status == 0 ? false : true} class="optionbtn" name="option"
+                    } value={elm.childtask_name} checked={elm.child_status === 0 ? false : true} class="optionbtn" name="option"
 
                     />
 

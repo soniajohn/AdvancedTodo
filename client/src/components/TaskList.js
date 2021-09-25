@@ -86,12 +86,14 @@ const Tasklist = () => {
 
 
 
-  const deleteItem = (id, todolist_id) => {
+  const deleteItem = (id,todolist_id) => {
+    alert(todolist_id)
     const updatedItems = items.filter((elm, ind) => {
 
       return ind !== id;
 
     });
+    alert("todoid="+todolist_id)
     deleteTask(todolist_id);
     setItems(updatedItems);
 
@@ -105,7 +107,7 @@ const Tasklist = () => {
 
   const updateTask = (tasname, todolistid) => {
 
-
+alert(tasname)
 
     Axios.put(`http://localhost:4000/users/${userid}/todolists/${todolistid}`,
       {
@@ -135,8 +137,10 @@ const Tasklist = () => {
     ).then(response => {
 
       var todoid = response.data[0].Todoid
+      
+  
       setItems(response.data)
-
+   
     })
       .catch(err => {
         console.log(err)
@@ -294,6 +298,7 @@ const Tasklist = () => {
 
 
                     <label name="text">{elm.Todoname}</label>
+                    
                     <img title="edit item" class="editimg" src="https://img.icons8.com/color/48/000000/edit-property.png" onClick={() => editItem(elm.Todoid)} />
                     <i class="fa fa-trash" title="delete Item" onClick={() => deleteItem(ind, elm.Todoid)}></i>
 
